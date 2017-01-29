@@ -1,28 +1,3 @@
-/***************************************************************
-* Project name: Calendar Project
-* Author: Spencer Freebairn
-*
-* Description:
-*   Displays the calendar of a month and year, later than
-*   1753, specified by the user
-*
-* NOTES:
-*   1/1/2017  - Functions are ordered alphabetically after main,
-*               function prototypes are at the top
-*             - Wrote stub stub functions for entire program, completed
-*               following functions: getMonth(), getYear()
-*             - Need to correct algorithm in computeOffset()
-*   1/2/2017  - Created new function: checkIfLeapYear()
-*             - Need to correct for loop in computeOffset()
-*   1/8/2017  - Verified that algorithm in checkIfLeapYear() is correct
-*   1/16/2017 - Working on algorithm in computeOffset()... it's a pain
-*   1/19/2017 - computeOffset complete
-*             - completed programming, needs to be tested for runtime
-*               errors somehow
-*
-* Started: 1/1/2017 22:20
-* Completed: 1/19/2017 21:44
-***************************************************************/
 #include <iostream>
 #include <iomanip>
 using namespace std;
