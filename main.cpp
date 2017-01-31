@@ -169,6 +169,7 @@ void displayTable(int offset, int numDays)
     cout << "  Su  Mo  Tu  We  Th  Fr  Sa" << endl;
 
     int dayToPrint = 1;
+
     for (int count = offset + 1; count <= numDays + offset; count++)
     {
         if (dayToPrint == 1)
@@ -207,6 +208,7 @@ void displayTable(int offset, int numDays)
         }
         dayToPrint++;
     }
+    cout << "\n";
 }
 
 /******************************************
