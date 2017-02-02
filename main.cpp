@@ -14,7 +14,6 @@ int main()
 {
     int month = getMonth();
     int year = getYear();
-
     int offset = computeOffset(month, year);
     printMonthYear(month, year);
     displayTable(offset, calcNumDays(month, year));
@@ -28,7 +27,8 @@ int main()
 ****************************************/
 int calcNumDays(int month, int year)
 {
-    if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
+    if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 ||
+        month == 10 || month == 12)
     {
         return 31;
     }
@@ -36,8 +36,8 @@ int calcNumDays(int month, int year)
     {
         return 30;
     }
-    else if (checkIfLeapYear(year) == true) // returns 29 days for Feb if it's leap year
-    {
+    else if (checkIfLeapYear(year) == true) // returns 29 days for Feb if it's
+    {                                       //    leap year
         return 29;
     }
     else                      // otherwise it returns 28 days for Feb
@@ -100,61 +100,9 @@ int computeOffset(int month, int year)
     // adds number of days in each month of the year specified
     //    to total number of days passed since Jan 1, 1753
     //    until reaching month specified
-    if (month == 1)
+    for (int i = 1; i < month; i++)
     {
-        daysSince1753 += 0;
-    }
-    else if (month == 2)
-    {
-        daysSince1753 += 31;
-    }
-    else if (month == 3)
-    {
-        daysSince1753 += 59;
-    }
-    else if (month == 4)
-    {
-        daysSince1753 += 90;
-    }
-    else if (month == 5)
-    {
-        daysSince1753 += 120;
-    }
-    else if (month == 6)
-    {
-        daysSince1753 += 151;
-    }
-    else if (month == 7)
-    {
-        daysSince1753 += 181;
-    }
-    else if (month == 8)
-    {
-        daysSince1753 += 212;
-    }
-    else if (month == 9)
-    {
-        daysSince1753 += 243;
-    }
-    else if (month == 10)
-    {
-        daysSince1753 += 273;
-    }
-    else if (month == 11)
-    {
-        daysSince1753 += 304;
-    }
-    else if (month == 12)
-    {
-        daysSince1753 += 334;
-    }
-
-    // adds one more day if the month specified is past
-    //    January and the year specified is a leap year
-    //    to add extra day for Feb
-    if (month >= 2 && checkIfLeapYear(year) == true)
-    {
-        daysSince1753 += 1;
+        daysSince1753 += calcNumDays(i, year);
     }
 
     return daysSince1753 % 7;
@@ -166,10 +114,10 @@ int computeOffset(int month, int year)
 ****************************************/
 void displayTable(int offset, int numDays)
 {
+
     cout << "  Su  Mo  Tu  We  Th  Fr  Sa" << endl;
 
     int dayToPrint = 1;
-
     for (int count = offset + 1; count <= numDays + offset; count++)
     {
         if (dayToPrint == 1)
