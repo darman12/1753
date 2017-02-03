@@ -1,8 +1,10 @@
 #include <iostream>
 #include <iomanip>
+#include <fstream>
 using namespace std;
 
 int calcNumDays(int month, int year);
+bool checkFile();
 bool checkIfLeapYear(int yearCount);
 int computeOffset(int month, int year);
 void displayTable(int offset, int numDays);
@@ -10,8 +12,18 @@ int getMonth();
 int getYear();
 void printMonthYear(int month, int year);
 
+char fileName[256];
+
 int main()
 {
+    cout << "What is the name of the file you wish to have the calendar"
+         << " saved in? ";
+    cin >> fileName;
+    while (checkFile() == false) {
+        cout << "Cannot write to that file, please select another: " << endl;
+        cin >> fileName;
+    }
+    cout << "Your calendar will be saved in \"" << fileName << "\"." << endl;
     int month = getMonth();
     int year = getYear();
     int offset = computeOffset(month, year);
@@ -44,6 +56,21 @@ int calcNumDays(int month, int year)
     {
         return 28;
     }
+}
+
+/******************************************
+* Checks to see if the specified file can
+* be writeen to
+******************************************/
+bool checkFile()
+{
+    ofstream fout(fileName, ios::app);
+    if (fout.fail()) {
+        return false;
+    }
+
+    fout.close();
+    return true;
 }
 
 /*************************************
@@ -114,8 +141,9 @@ int computeOffset(int month, int year)
 ****************************************/
 void displayTable(int offset, int numDays)
 {
+    ofstream fout(fileName, ios::app);
 
-    cout << "  Su  Mo  Tu  We  Th  Fr  Sa" << endl;
+    fout << "  Su  Mo  Tu  We  Th  Fr  Sa" << endl;
 
     int dayToPrint = 1;
     for (int count = offset + 1; count <= numDays + offset; count++)
@@ -124,39 +152,40 @@ void displayTable(int offset, int numDays)
         {
             if (offset == 6)
             {
-                cout << setw(4) << dayToPrint;
+                fout << setw(4) << dayToPrint;
             }
             else
             {
-                cout << setw(8 + (4 * offset)) << dayToPrint;
+                fout << setw(8 + (4 * offset)) << dayToPrint;
             }
         }
         else if (count % 7 != 0)
         {
             if (dayToPrint > 9)
             {
-                cout << "  " << dayToPrint;
+                fout << "  " << dayToPrint;
             }
             else
             {
-                cout << "   " << dayToPrint;
+                fout << "   " << dayToPrint;
             }
         }
         else
         {
             if (dayToPrint > 9)
             {
-                cout << "\n  " << dayToPrint;
+                fout << "\n  " << dayToPrint;
             }
             else
             {
-                cout << "\n   " << dayToPrint;
+                fout << "\n   " << dayToPrint;
             }
 
         }
         dayToPrint++;
     }
-    cout << "\n";
+    fout << "\n\n";
+    fout.close();
 }
 
 /******************************************
@@ -209,52 +238,55 @@ int getYear()
 *********************************/
 void printMonthYear(int month, int year)
 {
+    ofstream fout(fileName, ios::app);
+
     if (month == 1)
     {
-        cout << "\nJanuary, " << year << endl;
+        fout << "January, " << year << endl;
     }
     else if (month == 2)
     {
-        cout << "\nFebruary, " << year << endl;
+        fout << "February, " << year << endl;
     }
     else if (month == 3)
     {
-       cout << "\nMarch, " << year << endl;
+       fout << "March, " << year << endl;
     }
     else if (month == 4)
     {
-       cout << "\nApril, " << year << endl;
+       fout << "April, " << year << endl;
     }
     else if (month == 5)
     {
-       cout << "\nMay, " << year << endl;
+       fout << "May, " << year << endl;
     }
     else if (month == 6)
     {
-        cout << "\nJune, " << year << endl;
+        fout << "June, " << year << endl;
     }
     else if (month == 7)
     {
-        cout << "\nJuly, " << year << endl;
+        fout << "July, " << year << endl;
     }
     else if (month == 8)
     {
-        cout << "\nAugust, " << year << endl;
+        fout << "August, " << year << endl;
     }
     else if (month == 9)
     {
-        cout << "\nSeptember, " << year << endl;
+        fout << "September, " << year << endl;
     }
     else if (month == 10)
     {
-       cout << "\nOctober, " << year << endl;
+       fout << "October, " << year << endl;
     }
     else if (month == 11)
     {
-       cout << "\nNovember, " << year << endl;
+       fout << "November, " << year << endl;
     }
     else if (month == 12)
     {
-        cout << "\nDecember, " << year << endl;
+        fout << "December, " << year << endl;
     }
+    fout.close();
 }
