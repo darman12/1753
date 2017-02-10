@@ -1,3 +1,29 @@
+/***************************************************************
+* Project name: Calendar Project
+* Author: Spencer Freebairn
+*
+* Description:
+*   Displays the calendar of a month and year, later than
+*   1753, specified by the user
+*
+* NOTES:
+*   1/1/2017  - Functions are ordered alphabetically after main,
+*               function prototypes are at the top
+*             - Wrote stub stub functions for entire program, completed
+*               following functions: getMonth(), getYear()
+*             - Need to correct algorithm in computeOffset()
+*   1/2/2017  - Created new function: checkIfLeapYear()
+*             - Need to correct for loop in computeOffset()
+*   1/8/2017  - Verified that algorithm in checkIfLeapYear() is correct
+*   1/16/2017 - Working on algorithm in computeOffset()... it's a pain
+*   1/19/2017 - computeOffset complete
+*             - completed programming, needs to be tested for runtime
+*               errors somehow
+*
+*   2/1/2017  - all further changes will be noted on GitHub
+* Started: 1/1/2017 22:20
+* Completed: 1/19/2017 21:44
+***************************************************************/
 #include <iostream>
 #include <iomanip>
 using namespace std;
@@ -99,10 +125,10 @@ int computeOffset(int month, int year)
 
     // adds number of days in each month of the year specified
     //    to total number of days passed since Jan 1, 1753
-    //    until reaching month specified
-    for (int i = 1; i < month; i++)
+    //    until reaching month specified (exclusively)
+    for (int count = 1; count < month; count++)
     {
-        daysSince1753 += calcNumDays(i, year);
+        daysSince1753 += calcNumDays(count, year);
     }
 
     return daysSince1753 % 7;
