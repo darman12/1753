@@ -31,18 +31,16 @@ using namespace std;
 int calcNumDays(int month, int year);
 bool checkIfLeapYear(int yearCount);
 int computeOffset(int month, int year);
-void displayTable(int offset, int numDays);
+void displayCalendar(int offset, int numDays, int month, int year);
 int getMonth();
 int getYear();
-void printMonthYear(int month, int year);
 
 int main()
 {
     int month = getMonth();
     int year = getYear();
     int offset = computeOffset(month, year);
-    printMonthYear(month, year);
-    displayTable(offset, calcNumDays(month, year));
+    displayCalendar(offset, calcNumDays(month, year), month, year);
 
     return 0;
 }
@@ -138,8 +136,14 @@ int computeOffset(int month, int year)
 * Displays calendar table for the given
 * month and year
 ****************************************/
-void displayTable(int offset, int numDays)
+void displayCalendar(int offset, int numDays, int month, int year)
 {
+    string months[256] = {
+        "January", "February", "March", "April","May", "June", "July", "August",
+        "September", "October", "November", "December"
+    };
+
+    cout << months[month - 1] << ", " << year << endl;
 
     cout << "  Su  Mo  Tu  We  Th  Fr  Sa" << endl;
 
@@ -226,61 +230,4 @@ int getYear()
     while (year < 1753);
 
     return year;
-}
-
-/************************************
-* Displays month in text then year in
-* numbers before displayTable() displays
-* the calendar
-*********************************/
-void printMonthYear(int month, int year)
-{
-    if (month == 1)
-    {
-        cout << "\nJanuary, " << year << endl;
-    }
-    else if (month == 2)
-    {
-        cout << "\nFebruary, " << year << endl;
-    }
-    else if (month == 3)
-    {
-       cout << "\nMarch, " << year << endl;
-    }
-    else if (month == 4)
-    {
-       cout << "\nApril, " << year << endl;
-    }
-    else if (month == 5)
-    {
-       cout << "\nMay, " << year << endl;
-    }
-    else if (month == 6)
-    {
-        cout << "\nJune, " << year << endl;
-    }
-    else if (month == 7)
-    {
-        cout << "\nJuly, " << year << endl;
-    }
-    else if (month == 8)
-    {
-        cout << "\nAugust, " << year << endl;
-    }
-    else if (month == 9)
-    {
-        cout << "\nSeptember, " << year << endl;
-    }
-    else if (month == 10)
-    {
-       cout << "\nOctober, " << year << endl;
-    }
-    else if (month == 11)
-    {
-       cout << "\nNovember, " << year << endl;
-    }
-    else if (month == 12)
-    {
-        cout << "\nDecember, " << year << endl;
-    }
 }
