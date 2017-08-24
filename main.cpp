@@ -1,233 +1,151 @@
-/***************************************************************
-* Project name: Calendar Project
-* Author: Spencer Freebairn
-*
-* Description:
-*   Displays the calendar of a month and year, later than
-*   1753, specified by the user
-*
-* NOTES:
-*   1/1/2017  - Functions are ordered alphabetically after main,
-*               function prototypes are at the top
-*             - Wrote stub stub functions for entire program, completed
-*               following functions: getMonth(), getYear()
-*             - Need to correct algorithm in computeOffset()
-*   1/2/2017  - Created new function: checkIfLeapYear()
-*             - Need to correct for loop in computeOffset()
-*   1/8/2017  - Verified that algorithm in checkIfLeapYear() is correct
-*   1/16/2017 - Working on algorithm in computeOffset()... it's a pain
-*   1/19/2017 - computeOffset complete
-*             - completed programming, needs to be tested for runtime
-*               errors somehow
-*
-*   2/1/2017  - all further changes will be noted on GitHub
-* Started: 1/1/2017 22:20
-* Completed: 1/19/2017 21:44
-***************************************************************/
 #include <iostream>
 #include <iomanip>
 using namespace std;
 
-int calcNumDays(int month, int year);
-bool checkIfLeapYear(int yearCount);
-int computeOffset(int month, int year);
-void displayCalendar(int offset, int numDays, int month, int year);
-int getMonth();
-int getYear();
+/******************************************
+* This program displays a monthly calendar
+* for a user-specified month and year
+*
+* Created by Spencer Freebairn (darman12)
+******************************************/
 
-int main()
-{
-    int month = getMonth();
-    int year = getYear();
-    int offset = computeOffset(month, year);
-    displayCalendar(offset, calcNumDays(month, year), month, year);
+/**************************************
+* Checks if given year is a leap year
+**************************************/
+bool isLeapYear(int year) {
+
+	if (year % 4 != 0) {
+        return false;
+    }
+    else if (year % 100 != 0) {
+        return true;
+    }
+    else if (year % 400 != 0) {
+        return false;
+    }
+    return true;
+}
+
+/**************************************
+* Prompts user to input a month
+**************************************/
+int getMonth() {
+
+	int num;
+	do {	
+		cout << "Enter a month number: ";
+		cin >> num;
+	}
+	while (num < 1 || num > 12);
+	return num;
+}
+
+/**************************************
+* Prompts user to input a year
+**************************************/
+int getYear() {
+
+	int num = 0;	
+	
+	do {	
+		cout << "Enter a year: ";
+		cin >> num;
+	}
+	while (num < 1753);
+	return num;
+}
+
+/**************************************
+* Returns the number of days in given 
+* month of given year
+**************************************/
+int calcNumDays(int month, int year) {
+
+	int daysByMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	
+	if (isLeapYear(year) && month == 2) {
+		return 29;
+	}	
+	return daysByMonth[month - 1];
+}
+
+/**************************************
+* Counts num of days that have passed
+* since Jan 1, 1753, returns remainder
+* of days passed divided by 7
+**************************************/
+int computeOffset(int month, int year) {
+
+	int daysSince1753 = 0;
+
+	// adds days 366 days per leap year and 365 days per non-leap year
+	// from 1753 (inclusively) to the year input by user (exclusively)
+	for (int i = 1753; i < year; i++) {
+		if (isLeapYear(i)) {
+			daysSince1753 += 366;
+		}
+		else {
+			daysSince1753 += 365;
+		}
+	}
+	
+	for (int i = 1; i < month; i++) {
+		daysSince1753 += calcNumDays(i, year);
+	}
+	return daysSince1753 % 7;
+}
+
+
+/**************************************
+* Displays the calendar
+**************************************/
+void displayCalendar(int month, int year, int offset, int numDays) {
+
+	string monthNames[] = {
+		"January", "February", "March", "April", "May", "June", "July",
+		"August", "September", "October", "November", "December"};
+
+	cout << "\n" << monthNames[month -1] << ", " << year << endl;
+	cout << "  Su  Mo  Tu  We  Th  Fr  Sa" << endl;
+	
+	if (offset == 0) {
+		cout << setw(7);
+	}
+	else if (offset == 6) {
+		cout << setw(3);
+	}
+	else {
+		cout << "  ";
+		for (int i = 0; i <= offset; i++) {
+			cout << "    ";
+		}
+	} 
+	
+	for (int i = 1; i <= numDays; i++) {
+		if(offset == 6 && i == 1) {}
+		else if ((i + offset) % 7 == 0) {
+			cout << endl << "  ";	
+		} 		
+
+		if (i < 10) {
+			cout << " " << i << "  ";  
+		}
+		else {
+			cout << i << "  ";
+		}	
+	}
+	cout << endl;
+}
+
+int main() {
+
+	int month = getMonth();
+	int year = getYear();
+	int numDays = calcNumDays(month, year);	
+	int offset = computeOffset(month, year);
+
+	displayCalendar(month, year, offset, numDays);
 
     return 0;
 }
 
-/****************************************
-* Calculates the number of days in the
-* the given month
-****************************************/
-int calcNumDays(int month, int year)
-{
-    if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 ||
-        month == 10 || month == 12)
-    {
-        return 31;
-    }
-    else if (month == 4 || month ==  6 || month == 9 || month == 11)
-    {
-        return 30;
-    }
-    else if (checkIfLeapYear(year) == true) // returns 29 days for Feb if it's
-    {                                       //    leap year
-        return 29;
-    }
-    else                      // otherwise it returns 28 days for Feb
-    {
-        return 28;
-    }
-}
-
-/*************************************
-* Determines whether a given year is
-* a leap year
-*************************************/
-bool checkIfLeapYear(int year)
-{
-    bool isLeapYear = false;
-
-    if (year % 4 != 0)
-    {
-        isLeapYear = false;
-    }
-    else if (year % 100 != 0)
-    {
-        isLeapYear = true;
-    }
-    else if (year % 400 != 0)
-    {
-        isLeapYear = false;
-    }
-    else
-    {
-        isLeapYear = true;
-    }
-    return isLeapYear;
-}
-
-/*****************************************
-* Calculates the offset for a given month
-* and year
-******************************************/
-int computeOffset(int month, int year)
-{
-    int daysSince1753 = 0;
-
-    // adds 365 days for each year from 1753 (inclusively) to
-    //    the year specified (exclusively). Adds 366 days for
-    //    leap years.
-    for (int yearCount = 1753; yearCount < year; yearCount++)
-    {
-        bool isLeapYear = checkIfLeapYear(yearCount);
-        if (isLeapYear == true)
-        {
-            daysSince1753 += 366;
-        }
-        else
-        {
-            daysSince1753 += 365;
-        }
-    }
-
-    // adds number of days in each month of the year specified
-    //    to total number of days passed since Jan 1, 1753
-    //    until reaching month specified (exclusively)
-    for (int count = 1; count < month; count++)
-    {
-        daysSince1753 += calcNumDays(count, year);
-    }
-
-    return daysSince1753 % 7;
-}
-
-/****************************************
-* Displays calendar table for the given
-* month and year
-****************************************/
-void displayCalendar(int offset, int numDays, int month, int year)
-{
-    string months[256] = {
-        "January", "February", "March", "April","May", "June", "July", "August",
-        "September", "October", "November", "December"
-    };
-
-    cout << months[month - 1] << ", " << year << endl;
-
-    cout << "  Su  Mo  Tu  We  Th  Fr  Sa" << endl;
-
-    int dayToPrint = 1;
-    for (int count = offset + 1; count <= numDays + offset; count++)
-    {
-        if (dayToPrint == 1)
-        {
-            if (offset == 6)
-            {
-                cout << setw(4) << dayToPrint;
-            }
-            else
-            {
-                cout << setw(8 + (4 * offset)) << dayToPrint;
-            }
-        }
-        else if (count % 7 != 0)
-        {
-            if (dayToPrint > 9)
-            {
-                cout << "  " << dayToPrint;
-            }
-            else
-            {
-                cout << "   " << dayToPrint;
-            }
-        }
-        else
-        {
-            if (dayToPrint > 9)
-            {
-                cout << "\n  " << dayToPrint;
-            }
-            else
-            {
-                cout << "\n   " << dayToPrint;
-            }
-
-        }
-        dayToPrint++;
-    }
-    cout << "\n";
-}
-
-/******************************************
-* Prompts the user to enter a month number,
-* checks to make sure input is valid
-******************************************/
-int getMonth()
-{
-    int month;
-    do
-    {
-        cout << "Enter a month number: ";
-        cin >> month;
-        if (month < 1 || month > 12)
-        {
-            cout << "Month must be between 1 and 12." << endl;
-        }
-    }
-    while (month < 1 || month > 12);
-
-    return month;
-}
-
-/******************************************
-* Prompts the user to enter a year later
-* than 1753
-******************************************/
-int getYear()
-{
-    int year;
-
-    do
-    {
-        cout << "Enter year: ";
-        cin >> year;
-        if (year < 1753)
-        {
-            cout << "Year must be 1753 or later." << endl;
-        }
-    }
-    while (year < 1753);
-
-    return year;
-}
