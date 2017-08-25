@@ -5,7 +5,7 @@ using namespace std;
 /******************************************
 * This program displays a monthly calendar
 * for a user-specified month and year
-* DERP
+*
 * Created by Spencer Freebairn (darman12)
 ******************************************/
 
